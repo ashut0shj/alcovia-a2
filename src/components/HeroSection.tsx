@@ -1,7 +1,8 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import Image from "next/image";
 import Button from "./ui/Button";
 import { ChevronDown } from "lucide-react";
 import { wordStagger, wordItem } from "@/lib/animations";
@@ -23,7 +24,7 @@ export default function HeroSection() {
   return (
     <motion.section
       ref={ref}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
       style={{ opacity }}
     >
       {/* Parallax Background */}
@@ -31,6 +32,18 @@ export default function HeroSection() {
         className="absolute inset-0 bg-gradient-to-b from-background-offwhite via-background-light to-background-cream"
         style={{ y: backgroundY }}
       >
+        {/* Hero Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero/hero-bg.png"
+            alt="Hero background"
+            fill
+            className="object-cover"
+            priority
+            quality={90}
+          />
+        </div>
+        
         {/* Animated gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-br from-accent-gold/10 via-transparent to-accent-maroon/10" />
         

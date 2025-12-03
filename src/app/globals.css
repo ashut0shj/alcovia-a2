@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background-light text-text-primary;
+    overflow-x: hidden;
+  }
+
+  /* Hide default cursor on non-touch devices */
+  @media (hover: hover) and (pointer: fine) {
+    body {
+      cursor: none;
+    }
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-text-primary;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-text-primary;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold text-text-primary;
+  }
+
+  p {
+    @apply text-base md:text-lg leading-relaxed text-text-secondary;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary via-accent-maroon to-accent-gold bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-primary {
+    @apply bg-gradient-to-br from-primary via-accent-maroon to-accent-gold;
+  }
+
+  .bg-gradient-light {
+    @apply bg-gradient-to-b from-background-light to-background-offwhite;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbar but keep functionality */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E3A5F;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #8B1538;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

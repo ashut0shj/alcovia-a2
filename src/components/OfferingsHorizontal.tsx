@@ -109,12 +109,24 @@ export default function OfferingsHorizontal() {
         const container = horizontalRef.current;
         const leftPadding = container ? parseInt(getComputedStyle(container).paddingLeft) || 24 : 24;
         const rightPadding = container ? parseInt(getComputedStyle(container).paddingRight) || 24 : 24;
-        const totalWidth = (cardWidth + gap) * offerings.length - gap + leftPadding + rightPadding;
-        const scrollDistance = Math.max(0, totalWidth - window.innerWidth);
+        
+        // Total width of all cards + gaps + padding
+        const cardsWidth = (cardWidth + gap) * offerings.length - gap;
+        const totalWidth = cardsWidth + leftPadding + rightPadding;
+        
+        // Calculate scroll distance:
+        // At start (x=0): First card should be visible with left padding
+        // At end: Last card's right edge should be at viewport right edge
+        // We need to scroll: totalWidth - viewportWidth
+        // But we also want to ensure the last card is fully visible, so we scroll until
+        // the last card's right edge (totalWidth - rightPadding) aligns with viewport right
+        const viewportWidth = window.innerWidth;
+        const scrollDistance = Math.max(0, totalWidth - viewportWidth);
 
         // Set width of horizontal container
         gsap.set(horizontalRef.current, {
           width: totalWidth,
+          x: 0, // Start at 0 - first cards will be visible
         });
 
         // Initial entrance animation for cards
@@ -184,10 +196,10 @@ export default function OfferingsHorizontal() {
           </div>
 
           {/* Horizontal Scroll Container - Vertically Centered */}
-          <div className="flex items-center justify-center w-full h-[60vh] min-h-[60vh] overflow-hidden">
+          <div className="flex items-center justify-start w-full h-[70vh] min-h-[70vh] overflow-hidden">
             <div
               ref={horizontalRef}
-              className="flex flex-row items-center px-6 lg:px-12"
+              className="flex flex-row items-center pl-6 lg:pl-12 pr-6 lg:pr-12"
               style={{ willChange: "transform" }}
             >
               {offerings.map((offering, index) => (

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { Linkedin, Instagram } from "lucide-react";
+import { Linkedin, Instagram, MessageCircle, Mail, Github } from "lucide-react";
 import Link from "next/link";
 
 const socials = [
@@ -12,12 +12,40 @@ const socials = [
     icon: Linkedin,
     url: "https://linkedin.com/company/alcovia",
     angle: -10,
+    gradient: "from-blue-600 to-white",
+    iconColor: "text-blue-600",
   },
   {
     name: "Instagram",
     icon: Instagram,
     url: "https://instagram.com/alcovia",
     angle: 10,
+    gradient: "from-pink-500 via-yellow-400 to-pink-500",
+    iconColor: "text-pink-500",
+  },
+  {
+    name: "WhatsApp",
+    icon: MessageCircle,
+    url: "https://wa.me/9129093900",
+    angle: -5,
+    gradient: "from-green-500 to-white",
+    iconColor: "text-green-500",
+  },
+  {
+    name: "Gmail",
+    icon: Mail,
+    url: "mailto:contact@alcovia.com",
+    angle: 5,
+    gradient: "from-red-500 to-white",
+    iconColor: "text-red-500",
+  },
+  {
+    name: "GitHub",
+    icon: Github,
+    url: "https://github.com/ashut0shj",
+    angle: -8,
+    gradient: "from-gray-700 to-white",
+    iconColor: "text-gray-700",
   },
 ];
 
@@ -70,19 +98,19 @@ export default function SocialsFooter() {
                     className="block"
                   >
                     <motion.div
-                      className="bg-white border border-primary/30 rounded-2xl p-6 md:p-8 w-48 md:w-64 hover:border-primary hover:shadow-xl hover:shadow-accent-gold/20 transition-all duration-300 cursor-pointer"
+                      className={`bg-gradient-to-br ${social.gradient} border border-primary/30 rounded-2xl p-6 md:p-8 w-56 md:w-72 hover:border-primary hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden relative`}
                       whileHover={{ scale: 1.05 }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                      <div className="flex flex-col items-center text-center">
-                        <div className="w-12 h-12 md:w-16 md:h-16 mb-4 text-primary group-hover:text-accent-maroon transition-colors">
+                      <div className="flex flex-col items-center text-center relative z-10">
+                        <div className={`w-12 h-12 md:w-16 md:h-16 mb-4 ${social.iconColor} transition-colors`}>
                           <Icon className="w-full h-full" />
                         </div>
-                        <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-2">
+                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">
                           {social.name}
                         </h3>
-                        <p className="text-sm md:text-base text-text-secondary group-hover:text-accent-maroon transition-colors">
-                          Follow
+                        <p className="text-sm md:text-base text-gray-700 transition-colors">
+                          {social.name === "Gmail" ? "Email" : social.name === "WhatsApp" ? "Message" : "Follow"}
                         </p>
                       </div>
                     </motion.div>

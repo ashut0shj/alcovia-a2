@@ -51,9 +51,9 @@ export default function ToggleSection() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="relative inline-flex bg-white/80 p-1 rounded-full border border-primary/30 shadow-md">
+          <div className="relative flex items-center bg-white/80 p-1 rounded-full border border-primary/30 shadow-md">
             <motion.button
-              className={`relative z-10 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors ${
+              className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors flex items-center justify-center ${
                 activeState === "school"
                   ? "text-white"
                   : "text-text-secondary hover:text-text-primary"
@@ -63,7 +63,7 @@ export default function ToggleSection() {
               At School
             </motion.button>
             <motion.button
-              className={`relative z-10 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors ${
+              className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors flex items-center justify-center ${
                 activeState === "outside"
                   ? "text-white"
                   : "text-text-secondary hover:text-text-primary"
@@ -73,14 +73,13 @@ export default function ToggleSection() {
               Outside of School
             </motion.button>
             <motion.div
-              className="absolute top-1 bottom-1 bg-gradient-to-r from-primary via-accent-maroon to-accent-gold rounded-full"
+              className="absolute z-0 top-1 bottom-1 bg-gradient-to-r from-primary via-accent-maroon to-accent-gold rounded-full"
               initial={false}
               animate={{
                 left: activeState === "school" ? "4px" : "50%",
-                right: activeState === "school" ? "50%" : "4px",
+                width: "calc(50% - 4px)",
               }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              style={{ width: "calc(50% - 4px)" }}
             />
           </div>
         </motion.div>

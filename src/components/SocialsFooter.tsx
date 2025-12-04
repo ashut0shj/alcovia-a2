@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { Linkedin, Instagram, MessageCircle, Mail, Github } from "lucide-react";
 import Link from "next/link";
@@ -11,47 +11,82 @@ const socials = [
     name: "LinkedIn",
     icon: Linkedin,
     url: "https://linkedin.com/company/alcovia",
-    angle: -10,
-    gradient: "from-blue-600 to-white",
-    iconColor: "text-blue-600",
+    angle: -15,
+    bgColor: "bg-[#0077B5]",
+    iconColor: "text-white",
+    textColor: "text-white",
   },
   {
     name: "Instagram",
     icon: Instagram,
     url: "https://instagram.com/alcovia",
-    angle: 10,
-    gradient: "from-pink-500 via-yellow-400 to-pink-500",
-    iconColor: "text-pink-500",
+    angle: -5,
+    bgColor: "bg-gradient-to-br from-[#E4405F] to-[#F56040]",
+    iconColor: "text-white",
+    textColor: "text-white",
   },
   {
     name: "WhatsApp",
     icon: MessageCircle,
     url: "https://wa.me/9129093900",
-    angle: -5,
-    gradient: "from-green-500 to-white",
-    iconColor: "text-green-500",
+    angle: 5,
+    bgColor: "bg-[#25D366]",
+    iconColor: "text-white",
+    textColor: "text-white",
   },
   {
     name: "Gmail",
     icon: Mail,
     url: "mailto:contact@alcovia.com",
-    angle: 5,
-    gradient: "from-red-500 to-white",
-    iconColor: "text-red-500",
+    angle: 10,
+    bgColor: "bg-[#EA4335]",
+    iconColor: "text-white",
+    textColor: "text-white",
   },
   {
     name: "GitHub",
     icon: Github,
     url: "https://github.com/ashut0shj",
-    angle: -8,
-    gradient: "from-gray-700 to-white",
-    iconColor: "text-gray-700",
+    angle: 15,
+    bgColor: "bg-[#24292E]",
+    iconColor: "text-white",
+    textColor: "text-white",
   },
 ];
 
 export default function SocialsFooter() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Calculate arc positions and z-index
+  const getCardStyle = (index: number) => {
+    const totalCards = socials.length;
+    const centerIndex = Math.floor(totalCards / 2); // 2 (WhatsApp)
+    
+    // Arc y-offset: center is 0, sides go down
+    const distanceFromCenter = Math.abs(index - centerIndex);
+    const yOffset = distanceFromCenter * 20; // 0, 20, 40 for arc effect
+    
+    // Z-index: center highest, then middle, then extremes
+    let zIndex = 10;
+    if (index === centerIndex) {
+      zIndex = 50; // Center card in front
+    } else if (distanceFromCenter === 1) {
+      zIndex = 30; // Middle cards behind center
+    } else {
+      zIndex = 10; // Extreme cards at back
+    }
+
+    // Adjust z-index when hovered
+    if (hoveredIndex === index) {
+      zIndex = 100; // Hovered card on top
+    } else if (hoveredIndex !== null) {
+      zIndex = Math.max(5, zIndex - 10); // Other cards move back slightly
+    }
+
+    return { yOffset, zIndex };
+  };
 
   return (
     <footer className="relative bg-background-offwhite border-t border-primary/20">
@@ -70,26 +105,50 @@ export default function SocialsFooter() {
             Connect With Us
           </motion.h2>
 
-          {/* Fanned Out Social Cards */}
-          <div className="flex justify-center items-center gap-4 md:gap-8 flex-wrap">
+          {/* Fanned Out Social Cards in Arc */}
+          <div className="flex justify-center items-end flex-wrap relative" style={{ minHeight: "400px" }}>
             {socials.map((social, index) => {
               const Icon = social.icon;
+              const { yOffset, zIndex } = getCardStyle(index);
+              const isHovered = hoveredIndex === index;
+              
+              // Calculate overlap: each card overlaps by about 60px
+              // Center the group by offsetting from the center
+              const totalCards = socials.length;
+              const centerIndex = Math.floor(totalCards / 2);
+              const baseOverlapOffset = (index - centerIndex) * -60;
+              
+              // Only move adjacent cards when hovering
+              const isAdjacent = hoveredIndex !== null && Math.abs(index - hoveredIndex!) === 1;
+              const hoverXOffset = isHovered 
+                ? 0 
+                : isAdjacent 
+                  ? (index < hoveredIndex! ? -30 : 30) 
+                  : 0;
+              
               return (
                 <motion.div
                   key={social.name}
                   initial={{ opacity: 0, y: 50, rotate: social.angle }}
-                  animate={
-                    isInView
-                      ? { opacity: 1, y: 0, rotate: social.angle }
-                      : { opacity: 0, y: 50, rotate: social.angle }
-                  }
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  whileHover={{
-                    scale: 1.15,
-                    rotate: social.angle * 1.5,
-                    z: 50,
+                  animate={{
+                    opacity: isInView ? 1 : 0,
+                    y: isInView ? yOffset : 50,
+                    rotate: social.angle,
+                    scale: isHovered ? 1.2 : 1,
+                    x: baseOverlapOffset + hoverXOffset,
+                    zIndex: zIndex,
                   }}
-                  className="group"
+                  transition={{ 
+                    duration: 0.6, 
+                    delay: index * 0.1,
+                    type: "spring",
+                    stiffness: 300,
+                    damping: 25
+                  }}
+                  onHoverStart={() => setHoveredIndex(index)}
+                  onHoverEnd={() => setHoveredIndex(null)}
+                  className="group relative"
+                  style={{ zIndex }}
                 >
                   <Link
                     href={social.url}
@@ -98,19 +157,22 @@ export default function SocialsFooter() {
                     className="block"
                   >
                     <motion.div
-                      className={`bg-gradient-to-br ${social.gradient} border border-primary/30 rounded-2xl p-6 md:p-8 w-56 md:w-72 hover:border-primary hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden relative`}
-                      whileHover={{ scale: 1.05 }}
+                      className={`${social.bgColor} rounded-2xl p-8 md:p-10 w-48 md:w-56 h-64 md:h-80 shadow-2xl transition-all duration-300 cursor-pointer flex flex-col items-center justify-center`}
+                      whileHover={{ 
+                        scale: 1.1,
+                        y: -30,
+                      }}
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     >
-                      <div className="flex flex-col items-center text-center relative z-10">
-                        <div className={`w-12 h-12 md:w-16 md:h-16 mb-4 ${social.iconColor} transition-colors`}>
+                      <div className="flex flex-col items-center text-center h-full justify-center">
+                        <div className={`w-16 h-16 md:w-20 md:h-20 mb-6 ${social.iconColor} transition-colors`}>
                           <Icon className="w-full h-full" />
                         </div>
-                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-gray-800">
+                        <h3 className={`text-xl md:text-2xl font-bold ${social.textColor} mb-3`}>
                           {social.name}
                         </h3>
-                        <p className="text-sm md:text-base text-gray-700 transition-colors">
-                          {social.name === "Gmail" ? "Email" : social.name === "WhatsApp" ? "Message" : "Follow"}
+                        <p className={`text-sm md:text-base ${social.textColor} opacity-90`}>
+                          {social.name === "Gmail" ? "Email Us" : social.name === "WhatsApp" ? "Message Us" : "Follow"}
                         </p>
                       </div>
                     </motion.div>

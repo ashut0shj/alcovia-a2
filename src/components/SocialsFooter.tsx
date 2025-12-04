@@ -112,19 +112,45 @@ export default function SocialsFooter() {
               const { yOffset, zIndex } = getCardStyle(index);
               const isHovered = hoveredIndex === index;
               
+              // Card dimensions (base width in pixels)
+              const baseCardWidth = 224; // md:w-56 = 224px
+              const overlapAmount = 60; // pixels
+              const hoverScale = 1.25; // Scale factor when hovered
+              
               // Calculate overlap: each card overlaps by about 60px
               // Center the group by offsetting from the center
               const totalCards = socials.length;
               const centerIndex = Math.floor(totalCards / 2);
-              const baseOverlapOffset = (index - centerIndex) * -60;
+              const baseOverlapOffset = (index - centerIndex) * -overlapAmount;
               
-              // Only move adjacent cards when hovering
-              const isAdjacent = hoveredIndex !== null && Math.abs(index - hoveredIndex!) === 1;
-              const hoverXOffset = isHovered 
-                ? 0 
-                : isAdjacent 
-                  ? (index < hoveredIndex! ? -30 : 30) 
-                  : 0;
+              // Calculate compression to maintain container width
+              // When one card scales up, others compress proportionally
+              let scale = 1;
+              let xOffset = baseOverlapOffset;
+              
+              if (hoveredIndex !== null) {
+                if (isHovered) {
+                  // Hovered card scales up and moves up
+                  scale = hoverScale;
+                  // Move up more when hovered
+                } else {
+                  // Other cards compress to maintain total width
+                  // Extra space taken by hovered card = baseCardWidth * (hoverScale - 1)
+                  const extraSpace = baseCardWidth * (hoverScale - 1);
+                  // Distribute compression across other cards
+                  const compressionRatio = 1 - (extraSpace / (baseCardWidth * (totalCards - 1)));
+                  scale = Math.max(0.85, compressionRatio); // Minimum scale of 0.85
+                  
+                  // Adjust x position to compensate for compression
+                  // Cards before hovered card shift left, cards after shift right
+                  const compressionOffset = (baseCardWidth * (1 - scale)) / 2;
+                  if (index < hoveredIndex!) {
+                    xOffset = baseOverlapOffset - compressionOffset;
+                  } else {
+                    xOffset = baseOverlapOffset + compressionOffset;
+                  }
+                }
+              }
               
               return (
                 <motion.div
@@ -132,18 +158,18 @@ export default function SocialsFooter() {
                   initial={{ opacity: 0, y: 50, rotate: social.angle }}
                   animate={{
                     opacity: isInView ? 1 : 0,
-                    y: isInView ? yOffset : 50,
+                    y: isInView ? (isHovered ? yOffset - 40 : yOffset) : 50,
                     rotate: social.angle,
-                    scale: isHovered ? 1.2 : 1,
-                    x: baseOverlapOffset + hoverXOffset,
+                    scale: scale,
+                    x: xOffset,
                     zIndex: zIndex,
                   }}
                   transition={{ 
-                    duration: 0.6, 
-                    delay: index * 0.1,
+                    duration: 0.5, 
+                    delay: index * 0.05,
                     type: "spring",
-                    stiffness: 300,
-                    damping: 25
+                    stiffness: 400,
+                    damping: 30
                   }}
                   onHoverStart={() => setHoveredIndex(index)}
                   onHoverEnd={() => setHoveredIndex(null)}

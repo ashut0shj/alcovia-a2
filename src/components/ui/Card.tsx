@@ -14,7 +14,7 @@ interface CardProps {
 export default function Card({ children, className = "", delay = 0, icon }: CardProps) {
   return (
     <motion.div
-      className={`bg-white border border-primary/20 rounded-2xl p-6 md:p-8 hover:border-primary/50 hover:shadow-xl transition-all duration-300 ${className}`}
+      className={`bg-white border-2 border-primary/60 rounded-2xl p-6 md:p-8 hover:border-primary hover:shadow-xl transition-all duration-300 ${className}`}
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}

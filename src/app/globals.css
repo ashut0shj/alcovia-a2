@@ -44,6 +44,29 @@
   .bg-gradient-light {
     @apply bg-gradient-to-b from-background-light to-background-offwhite;
   }
+
+  .animate-scroll {
+    animation: scroll 3s linear infinite;
+  }
+
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-scroll {
+      animation: none;
+    }
+  }
 }
 
 /* Smooth scrolling */

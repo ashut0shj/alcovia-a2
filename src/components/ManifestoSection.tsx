@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 import Card from "./ui/Card";
-import { Users, Sparkles, TrendingUp, Rocket } from "lucide-react";
+import { Users, Sparkles, TrendingUp, Rocket, Target } from "lucide-react";
 import { wordStagger, wordItem } from "@/lib/animations";
 
 const manifestoText =
@@ -26,6 +26,10 @@ const keyOfferings = [
   {
     title: "Meet future builders",
     icon: <Rocket className="w-full h-full" />,
+  },
+  {
+    title: "Achieve your goals",
+    icon: <Target className="w-full h-full" />,
   },
 ];
 
@@ -119,18 +123,19 @@ export default function ManifestoSection() {
             })}
           </p>
         </motion.div>
+      </div>
 
-        {/* Key Offerings Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+      {/* Key Offerings Endless Scrolling Belt - Full Width */}
+      <div className="relative overflow-hidden w-full mt-8 md:mt-12">
+        <div className="flex animate-scroll">
+          {/* First set of offerings */}
           {keyOfferings.map((offering, index) => (
-            <motion.div
-              key={offering.title}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+            <div
+              key={`first-${offering.title}-${index}`}
+              className="flex-shrink-0 w-[280px] md:w-[320px] px-3 md:px-4"
             >
               <Card
-                delay={index * 0.1}
+                delay={0}
                 icon={
                   <div className="w-12 h-12 md:w-16 md:h-16 text-primary">
                     {offering.icon}
@@ -142,7 +147,28 @@ export default function ManifestoSection() {
                   {offering.title}
                 </h3>
               </Card>
-            </motion.div>
+            </div>
+          ))}
+          {/* Duplicate set for seamless loop */}
+          {keyOfferings.map((offering, index) => (
+            <div
+              key={`second-${offering.title}-${index}`}
+              className="flex-shrink-0 w-[280px] md:w-[320px] px-3 md:px-4"
+            >
+              <Card
+                delay={0}
+                icon={
+                  <div className="w-12 h-12 md:w-16 md:h-16 text-primary">
+                    {offering.icon}
+                  </div>
+                }
+                className="h-full hover:shadow-xl group"
+              >
+                <h3 className="text-xl md:text-2xl font-bold text-text-primary mb-2 group-hover:text-accent-maroon transition-colors">
+                  {offering.title}
+                </h3>
+              </Card>
+            </div>
           ))}
         </div>
       </div>

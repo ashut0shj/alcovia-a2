@@ -19,8 +19,7 @@ export default function CustomCursor() {
       const isTouch =
         "ontouchstart" in window ||
         navigator.maxTouchPoints > 0 ||
-        // @ts-ignore
-        navigator.msMaxTouchPoints > 0;
+        (typeof (navigator as any).msMaxTouchPoints !== "undefined" && (navigator as any).msMaxTouchPoints > 0);
       setIsTouchDevice(isTouch);
       return isTouch;
     };

@@ -3,7 +3,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
-import Button from "./ui/Button";
 import { ChevronDown } from "lucide-react";
 import { wordStagger, wordItem } from "@/lib/animations";
 

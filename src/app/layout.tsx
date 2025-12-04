@@ -19,6 +19,11 @@ const dancingScript = Dancing_Script({
 export const metadata: Metadata = {
   title: "Alcovia - Dare to become everything you were born to be",
   description: "Alcovia is a premier community of passion-driven teenagers building the leaders of tomorrow, today.",
+  icons: {
+    icon: "/images/logo/alcovia-logo.svg",
+    shortcut: "/images/logo/alcovia-logo.svg",
+    apple: "/images/logo/alcovia-logo.svg",
+  },
 };
 
 export default function RootLayout({
@@ -36,10 +41,10 @@ export default function RootLayout({
             <Image
               src="/images/logo/alcovia-logo.svg"
               alt="Alcovia Logo"
-              width={200}
-              height={60}
+              width={300}
+              height={90}
               priority
-              className="h-10 w-auto md:h-12"
+              className="h-16 w-auto md:h-20"
             />
           </div>
         </header>

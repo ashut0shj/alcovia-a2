@@ -53,6 +53,14 @@
     animation-play-state: paused;
   }
 
+  .animate-scroll-reverse {
+    animation: scroll-reverse 3s linear infinite;
+  }
+
+  .animate-scroll-reverse:hover {
+    animation-play-state: paused;
+  }
+
   @keyframes scroll {
     0% {
       transform: translateX(0);
@@ -62,8 +70,18 @@
     }
   }
 
+  @keyframes scroll-reverse {
+    0% {
+      transform: translateX(-50%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .animate-scroll {
+    .animate-scroll,
+    .animate-scroll-reverse {
       animation: none;
     }
   }

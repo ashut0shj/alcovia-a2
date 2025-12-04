@@ -342,7 +342,7 @@ export default function OfferingsHorizontal() {
         </div>
       </div>
 
-      {/* Mobile: Vertical Grid */}
+      {/* Mobile: 3 Rows of Horizontal Scrolling Cards */}
       <div className="md:hidden pb-20 pt-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Title */}
@@ -350,43 +350,95 @@ export default function OfferingsHorizontal() {
             <h2 className="text-center text-text-primary">What We Offer</h2>
           </div>
           
-          <div className="grid grid-cols-1 gap-6">
-            {offerings.map((offering) => (
-              <div
-                key={offering.title}
-                className="relative rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/20 min-h-[400px]"
-              >
-                {/* Background Image */}
-                <div className="absolute inset-0">
-                  <Image
-                    src={offering.image}
-                    alt={offering.title}
-                    fill
-                    className="object-cover"
-                    sizes="100vw"
-                  />
-                </div>
-                
-                {/* Dark overlay for text readability */}
-                <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
-                
-                {/* Content */}
-                <div className="relative z-10 h-full flex flex-col justify-end">
-                  <div
-                    className={`w-12 h-12 md:w-16 md:h-16 mb-4 bg-gradient-to-br ${offering.gradient} rounded-lg p-3 text-white shadow-lg`}
-                  >
-                    {offering.icon}
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-3 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
-                    {offering.title}
-                  </h3>
-                  <p className="text-white/90 text-sm md:text-base drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    {offering.description}
-                  </p>
+          {/* Split offerings into 3 rows (3 cards per row) */}
+          {[
+            offerings.slice(0, 3),   // Row 1: first 3 cards
+            offerings.slice(3, 6),   // Row 2: next 3 cards
+            offerings.slice(6, 9),   // Row 3: last 3 cards
+          ].map((rowOfferings, rowIndex) => (
+            <div key={rowIndex} className="mb-8">
+              <div className="relative overflow-hidden w-full">
+                <div className={`flex ${rowIndex === 1 ? 'animate-scroll-reverse' : 'animate-scroll'}`}>
+                  {/* First set of cards */}
+                  {rowOfferings.map((offering, index) => (
+                    <div
+                      key={`first-${offering.title}-${index}`}
+                      className="flex-shrink-0 w-[calc(50vw-32px)] sm:w-[300px] px-2"
+                    >
+                      <div className="relative rounded-2xl p-3 sm:p-4 hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/20">
+                        {/* Background Image */}
+                        <div className="absolute inset-0">
+                          <Image
+                            src={offering.image}
+                            alt={offering.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 50vw, 300px"
+                          />
+                        </div>
+                        
+                        {/* Dark overlay for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+                        
+                        {/* Content */}
+                        <div className="relative z-10 flex flex-col">
+                          <div
+                            className={`w-10 h-10 sm:w-12 sm:h-12 mb-2 sm:mb-3 bg-gradient-to-br ${offering.gradient} rounded-lg p-2 sm:p-3 text-white shadow-lg flex-shrink-0`}
+                          >
+                            {offering.icon}
+                          </div>
+                          <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 sm:mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-tight">
+                            {offering.title}
+                          </h3>
+                          <p className="text-white/90 text-xs sm:text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-snug">
+                            {offering.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {/* Duplicate set for seamless loop */}
+                  {rowOfferings.map((offering, index) => (
+                    <div
+                      key={`second-${offering.title}-${index}`}
+                      className="flex-shrink-0 w-[calc(50vw-32px)] sm:w-[300px] px-2"
+                    >
+                      <div className="relative rounded-2xl p-3 sm:p-4 hover:shadow-2xl transition-all duration-300 overflow-hidden border border-white/20">
+                        {/* Background Image */}
+                        <div className="absolute inset-0">
+                          <Image
+                            src={offering.image}
+                            alt={offering.title}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 640px) 50vw, 300px"
+                          />
+                        </div>
+                        
+                        {/* Dark overlay for text readability */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/80" />
+                        
+                        {/* Content */}
+                        <div className="relative z-10 flex flex-col">
+                          <div
+                            className={`w-10 h-10 sm:w-12 sm:h-12 mb-2 sm:mb-3 bg-gradient-to-br ${offering.gradient} rounded-lg p-2 sm:p-3 text-white shadow-lg flex-shrink-0`}
+                          >
+                            {offering.icon}
+                          </div>
+                          <h3 className="text-base sm:text-lg font-bold text-white mb-1.5 sm:mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] leading-tight">
+                            {offering.title}
+                          </h3>
+                          <p className="text-white/90 text-xs sm:text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-snug">
+                            {offering.description}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

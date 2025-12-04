@@ -8,7 +8,7 @@ import { Users, Sparkles, TrendingUp, Rocket } from "lucide-react";
 import { wordStagger, wordItem } from "@/lib/animations";
 
 const manifestoText =
-  "Unprecedented Learnings, Failing regularly, building with friends, while being on a journey of self discovery. Get on a legacy building journey today, to build the future of tomorrow.";
+  "Unprecedented ##Learnings##, Failing regularly, ##Building## with friends, while being on a journey of ##self-discovery##. Get on a ##legacy-building## journey today, to build the ##future## of tomorrow.";
 
 const keyOfferings = [
   {
@@ -33,7 +33,40 @@ export default function ManifestoSection() {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const words = manifestoText.split(" ");
+  // Parse text and identify highlighted words
+  const parseText = (text: string) => {
+    const parts: Array<{ text: string; isHighlighted: boolean }> = [];
+    const regex = /##([^#]+)##/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+      // Add text before highlight
+      if (match.index > lastIndex) {
+        parts.push({
+          text: text.substring(lastIndex, match.index),
+          isHighlighted: false,
+        });
+      }
+      // Add highlighted text
+      parts.push({
+        text: match[1],
+        isHighlighted: true,
+      });
+      lastIndex = regex.lastIndex;
+    }
+    // Add remaining text
+    if (lastIndex < text.length) {
+      parts.push({
+        text: text.substring(lastIndex),
+        isHighlighted: false,
+      });
+    }
+
+    return parts;
+  };
+
+  const textParts = parseText(manifestoText);
 
   return (
     <section
@@ -49,15 +82,41 @@ export default function ManifestoSection() {
           variants={wordStagger}
         >
           <p className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-text-primary leading-tight text-justify">
-            {words.map((word, index) => (
-              <motion.span
-                key={index}
-                variants={wordItem}
-                className="inline-block mr-2 md:mr-3"
-              >
-                {word}
-              </motion.span>
-            ))}
+            {textParts.map((part, partIndex) => {
+              const words = part.text.split(" ");
+              return words.map((word, wordIndex) => {
+                const isLastWord = wordIndex === words.length - 1;
+                const key = `${partIndex}-${wordIndex}`;
+                
+                if (part.isHighlighted) {
+                  return (
+                    <motion.span
+                      key={key}
+                      variants={wordItem}
+                      className="inline-block mr-2 md:mr-3 text-[#F4A261]"
+                      style={{ 
+                        fontFamily: "var(--font-dancing), 'Dancing Script', cursive",
+                        fontWeight: 900,
+                        letterSpacing: "0.03em",
+                        WebkitTextStroke: "0.5px #F4A261"
+                      }}
+                    >
+                      {word}{!isLastWord && " "}
+                    </motion.span>
+                  );
+                } else {
+                  return (
+                    <motion.span
+                      key={key}
+                      variants={wordItem}
+                      className="inline-block mr-2 md:mr-3 font-black"
+                    >
+                      {word}{!isLastWord && " "}
+                    </motion.span>
+                  );
+                }
+              });
+            })}
           </p>
         </motion.div>
 

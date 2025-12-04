@@ -164,7 +164,10 @@ export default function HeroSection() {
         </motion.h1>
 
         <motion.p
-          className="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-12 max-w-3xl mx-auto text-white/90 drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)] backdrop-blur-sm"
+          className="text-xl md:text-2xl lg:text-3xl mb-8 md:mb-12 max-w-3xl mx-auto text-white/90 backdrop-blur-sm"
+          style={{
+            textShadow: "0 4px 20px rgba(0, 0, 0, 0.8), 0 2px 10px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 0, 0, 0.4)",
+          }}
           initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
           animate={isLoaded ? { 
             opacity: 1, 

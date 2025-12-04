@@ -81,7 +81,7 @@ export default function ManifestoSection() {
           animate={isInView ? "animate" : "initial"}
           variants={wordStagger}
         >
-          <p className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-text-primary leading-tight text-justify">
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-text-primary leading-tight text-justify">
             {textParts.map((part, partIndex) => {
               const words = part.text.split(" ");
               return words.map((word, wordIndex) => {

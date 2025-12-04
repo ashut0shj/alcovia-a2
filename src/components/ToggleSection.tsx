@@ -52,26 +52,26 @@ export default function ToggleSection() {
           transition={{ duration: 0.6 }}
         >
           <div className="relative flex items-center bg-white/80 p-1 rounded-full border border-primary/30 shadow-md">
-            <motion.button
-              className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors flex items-center justify-center ${
-                activeState === "school"
-                  ? "text-white"
-                  : "text-text-secondary hover:text-text-primary"
-              }`}
-              onClick={() => setActiveState("school")}
-            >
-              At School
-            </motion.button>
-            <motion.button
-              className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-sm md:text-base transition-colors flex items-center justify-center ${
-                activeState === "outside"
-                  ? "text-white"
-                  : "text-text-secondary hover:text-text-primary"
-              }`}
-              onClick={() => setActiveState("outside")}
-            >
-              Outside of School
-            </motion.button>
+              <motion.button
+                className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg transition-colors flex items-center justify-center ${
+                  activeState === "school"
+                    ? "text-white"
+                    : "text-text-secondary hover:text-text-primary"
+                }`}
+                onClick={() => setActiveState("school")}
+              >
+                At School
+              </motion.button>
+              <motion.button
+                className={`relative z-10 flex-1 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg transition-colors flex items-center justify-center ${
+                  activeState === "outside"
+                    ? "text-white"
+                    : "text-text-secondary hover:text-text-primary"
+                }`}
+                onClick={() => setActiveState("outside")}
+              >
+                Outside of School
+              </motion.button>
             <motion.div
               className="absolute z-0 top-1 bottom-1 bg-gradient-to-r from-primary via-accent-maroon to-accent-gold rounded-full"
               initial={false}
@@ -94,7 +94,7 @@ export default function ToggleSection() {
               exit={{ opacity: 0, x: 50 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
             >
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 md:mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-text-primary mb-4 md:mb-6">
                 {currentContent.title}
               </h2>
               <p className="text-lg md:text-xl text-text-secondary mb-8 md:mb-12">

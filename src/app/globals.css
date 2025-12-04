@@ -16,19 +16,19 @@
   }
 
   h1 {
-    @apply text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-tight text-text-primary;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl font-black leading-tight text-text-primary;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-text-primary;
+    @apply text-2xl sm:text-3xl md:text-4xl lg:text-4xl xl:text-5xl font-bold leading-tight text-text-primary;
   }
 
   h3 {
-    @apply text-xl md:text-2xl lg:text-3xl font-semibold text-text-primary;
+    @apply text-lg sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl font-semibold text-text-primary;
   }
 
   p {
-    @apply text-base md:text-lg leading-relaxed text-text-secondary;
+    @apply text-sm sm:text-base md:text-lg lg:text-lg leading-relaxed text-text-secondary;
   }
 }
 
